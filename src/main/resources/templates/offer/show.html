@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Find Job</title>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="~{fragments/nav :: nav}"></th:block>
+
+<table>
+    <tr>
+        <th>Company name</th>
+        <th>Company logo</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Type</th>
+        <th>Salary range</th>
+        <th>Experience</th>
+        <th>Skills required</th>
+        <th>Location</th>
+    </tr>
+
+    <div th:each="offer : ${offers}">
+        <tr>
+            <th th:text="${offer.getCompanyName()}">Company name</th>
+            <th th:text="${offer.getCompanyLogo()}">Company logo</th>
+            <th th:text="${offer.getTitle()}">Title</th>
+            <th th:text="${offer.offerCategory?.category}">Category</th>
+            <th th:text="${offer.getOfferType()}">Type</th>
+            <th th:text="${offer.getMinSalary()} + ' - ' + ${offer.getMaxSalary()} + ' PLN'">Salary range</th>
+            <th th:text="${offer.getMinExperienceYears()} + ' - ' + ${offer.getMaxExperienceYears()} + ' years'">Experience</th>
+            <th th:text="${offer.getRequiredSkills()}">Skills required</th>
+            <th th:text="${offer.getLocation()}">Location</th>
+        </tr>
+    </div>
+</table>
+
+</body>
+</html>

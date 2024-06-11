@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All candidates</title>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="fragments/nav :: nav"></th:block>
+
+<table>
+    <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Phone number</th>
+        <th>Location</th>
+        <th>Created at</th>
+    </tr>
+
+    <div th:each="candidate : ${candidates}">
+        <tr>
+            <th th:text="${candidate.getFirstName()}">First name</th>
+            <th th:text="${candidate.getLastName()}">Last name</th>
+            <th th:text="${candidate.getEmail()}">Email</th>
+            <th th:text="${candidate.getPhone()}">Phone number</th>
+            <th th:text="${candidate.getLocation()}">Location</th>
+            <th th:text="${#temporals.format(candidate.createdAt, 'dd-MM-yyyy HH:mm:ss')}">Created at</th>
+        </tr>
+    </div>
+</table>
+
+</body>
+</html>

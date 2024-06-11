@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add qualification</title>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="~{fragments/nav :: nav}"></th:block>
+
+<form th:method="POST" th:action="@{/profile/qualifications/add}" th:object="${qualification}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+    <label for="degree">Degree: </label>
+    <input type="text" th:field="*{degree}" id="degree"/>
+    <div style="color:red" th:if="${#fields.hasErrors('degree')}" th:errors="*{degree}">Degree Error</div>
+    <br/>
+
+    <label for="university">University: </label>
+    <input type="text" th:field="*{university}" id="university"/>
+    <div style="color:red" th:if="${#fields.hasErrors('university')}" th:errors="*{university}">University Error</div>
+    <br/>
+
+    <label for="startDate">Start date: </label>
+    <input type="date" th:field="*{startDate}" id="startDate"/>
+
+    <label for="endDate">End date: </label>
+    <input type="date" th:field="*{endDate}" id="endDate"/>
+
+    <input type="hidden" th:field="*{person.id}" />
+
+    <br/>
+
+    <input type="submit" value="Add!"/>
+</form>
+
+</body>
+</html>

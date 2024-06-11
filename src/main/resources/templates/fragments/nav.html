@@ -1,0 +1,38 @@
+<nav>
+    <a href="/">Home</a>
+
+    <!-- Show profile link if user is logged in -->
+    <span sec:authorize="isAuthenticated()">
+        <!-- Show profile link -->
+        <a href="/profile">Profile</a>
+
+        <!-- Check if user has admin role -->
+        <span sec:authorize="hasRole('ROLE_ADMIN')">
+            <a href="/admin">Admin panel</a>
+        </span>
+
+        <!-- Check if user has employer role -->
+        <span sec:authorize="hasRole('ROLE_EMPLOYER')">
+            <a href="/employer/offers/add">Add offer</a>
+            <a href="/employer/offers/show">My offers</a>
+            <a href="/employer/applications">Offer applications</a>
+        </span>
+
+        <!-- Check if user has candidate role -->
+        <span sec:authorize="hasRole('ROLE_CANDIDATE')">
+            <a href="/candidate/applications">My applications</a>
+        </span>
+
+        <!-- Logout link -->
+        <form th:action="@{/logout}" th:method="POST" style="display: inline;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <input type="submit" value="Logout" />
+        </form>
+    </span>
+
+    <!-- Show login and signup links if user is not logged in -->
+    <span sec:authorize="!isAuthenticated()">
+        <a href="/auth/login">Login</a>
+        <a href="/auth/registration">Sign Up</a>
+    </span>
+</nav>

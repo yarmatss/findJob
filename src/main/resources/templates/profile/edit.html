@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit profile</title>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="~{fragments/nav :: nav}"></th:block>
+
+<form th:method="PATCH" th:action="@{/profile/{id}(id=${person.getId()})}" th:object="${person}" enctype="multipart/form-data">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+    <label for="firstName">First name: </label>
+    <input type="text" th:field="*{firstName}" id="firstName"/>
+    <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name Error
+    </div>
+    <br/>
+
+    <label for="lastName">Last name: </label>
+    <input type="text" th:field="*{lastName}" id="lastName"/>
+    <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name Error
+    </div>
+    <br/>
+
+    <label for="email">Email: </label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error
+    </div>
+    <br/>
+
+    <label for="phone">Phone number: </label>
+    <input type="text" th:field="*{phone}" id="phone"/>
+    <div style="color:red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone number Error
+    </div>
+    <br/>
+
+    <label for="location">Location: </label>
+    <input type="text" th:field="*{location}" id="location"/>
+    <div style="color:red" th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Location Error
+    </div>
+    <br/>
+
+    <label for="aboutMe">Bio: </label>
+    <input type="text" th:field="*{aboutMe}" id="aboutMe"/>
+    <div style="color:red" th:if="${#fields.hasErrors('aboutMe')}" th:errors="*{aboutMe}">Bio Error
+    </div>
+    <br/>
+
+    <!-- Hidden fields to retain values that are not editable in the form -->
+    <input type="hidden" th:field="*{username}" />
+    <input type="hidden" th:field="*{password}" />
+    <input type="hidden" th:field="*{createdAt}" />
+    <input type="hidden" th:field="*{role}" />
+
+    <!-- Check if user has candidate role -->
+    <span sec:authorize="hasAnyRole('ROLE_CANDIDATE', 'ROLE_EMPLOYER', 'ROLE_ADMIN')">
+        <label for="profilePicture">Upload profile image: </label>
+        <input type="file" id="profilePicture" name="avatar_file" accept="image/*" />
+        <br/>
+    </span>
+    <span sec:authorize="hasRole('ROLE_CANDIDATE')">
+        <label for="resumePdf">Upload resume: </label>
+        <input type="file" id="resumePdf" name="resume_file" accept=".pdf" />
+        <br/>
+
+        <h1>Qualifications</h1>
+        <a th:href="@{/profile/qualifications/add}">Add</a>
+        <h1>Skills</h1>
+        <a th:href="@{/profile/skills/add}">Add</a>
+        <h1>Work experience</h1>
+        <a th:href="@{/profile/work_experience/add}">Add</a>
+        <br/>
+    </span>
+
+    <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add skill</title>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="~{fragments/nav :: nav}"></th:block>
+
+<form th:method="POST" th:action="@{/profile/skills/add}" th:object="${skill}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+    <label for="skillName">Degree: </label>
+    <input type="text" th:field="*{skillName}" id="skillName"/>
+    <div style="color:red" th:if="${#fields.hasErrors('skillName')}" th:errors="*{skillName}">Skill Error</div>
+    <br/>
+
+    <label for="experience">Experience: </label>
+    <input type="number" th:field="*{experience}" id="experience"/>
+
+    <input type="hidden" th:field="*{person.id}" />
+    <br/>
+
+    <input type="submit" value="Add!"/>
+</form>
+
+</body>
+</html>

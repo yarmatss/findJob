@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit category</title>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="fragments/nav :: nav"></th:block>
+
+<form th:method="PATCH" th:action="@{/admin/category/{id}(id=${offer_category.getId()})}" th:object="${offer_category}">
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+  <label for="category">Enter category: </label>
+  <input type="text" th:field="*{category}" id="category"/>
+  <div style="color:red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">Category Error</div>
+  <br/>
+
+  <label for="description">Enter description: </label>
+  <input type="text" th:field="*{description}" id="description"/>
+  <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
+  <br/>
+
+  <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>

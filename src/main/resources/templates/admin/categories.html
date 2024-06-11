@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Offer categories</title>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="fragments/nav :: nav"></th:block>
+
+<table>
+    <tr>
+        <th>Category id</th>
+        <th>Category name</th>
+        <th>Description</th>
+        <th>Action</th>
+    </tr>
+
+    <div th:each="offer_category : ${offer_categories}">
+        <tr>
+        <th th:text="${offer_category.getId()}">id</th>
+        <th th:text="${offer_category.getCategory()}">name</th>
+        <th th:text="${offer_category.getDescription()}">description</th>
+        <th>
+            <a th:href="@{/admin/category/{id}/edit(id=${offer_category.getId()})}">Edit</a>
+            <form th:method="DELETE" th:action="@{/admin/category/{id}(id=${offer_category.getId()})}" style="display: inline;" >
+                <input type="submit" value="Delete"/>
+            </form>
+        </th>
+        </tr>
+    </div>
+</table>
+
+</body>
+</html>

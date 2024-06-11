@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile picture</title>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="~{fragments/nav :: nav}"></th:block>
+
+<form th:action="@{/profile/{id}/avatar(id=${person.getId()})}" th:method="PATCH" enctype="multipart/form-data">
+    <input type="file" name="profilePicture" accept="image/*" />
+    <button type="submit">Upload avatar</button>
+</form>
+
+</body>
+</html>

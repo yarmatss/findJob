@@ -3,34 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Offer categories</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
+        .action-buttons a, .action-buttons form {
+            display: inline;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
 
 <!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
 
-<table>
-    <tr>
-        <th>Category id</th>
-        <th>Category name</th>
-        <th>Description</th>
-        <th>Action</th>
-    </tr>
-
-    <div th:each="offer_category : ${offer_categories}">
+<div class="container">
+    <h1>Offer Categories</h1>
+    <table>
+        <thead>
         <tr>
-        <th th:text="${offer_category.getId()}">id</th>
-        <th th:text="${offer_category.getCategory()}">name</th>
-        <th th:text="${offer_category.getDescription()}">description</th>
-        <th>
-            <a th:href="@{/admin/category/{id}/edit(id=${offer_category.getId()})}">Edit</a>
-            <form th:method="DELETE" th:action="@{/admin/category/{id}(id=${offer_category.getId()})}" style="display: inline;" >
-                <input type="submit" value="Delete"/>
-            </form>
-        </th>
+            <th>Category id</th>
+            <th>Category name</th>
+            <th>Description</th>
+            <th>Action</th>
         </tr>
-    </div>
-</table>
+        </thead>
+        <tbody>
+        <tr th:each="offer_category : ${offer_categories}">
+            <td th:text="${offer_category.getId()}">id</td>
+            <td th:text="${offer_category.getCategory()}">name</td>
+            <td th:text="${offer_category.getDescription()}">description</td>
+            <td class="action-buttons">
+                <a th:href="@{/admin/category/{id}/edit(id=${offer_category.getId()})}">Edit</a>
+                <form th:method="DELETE" th:action="@{/admin/category/{id}(id=${offer_category.getId()})}">
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

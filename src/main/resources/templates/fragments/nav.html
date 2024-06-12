@@ -1,43 +1,43 @@
-<nav>
-    <a href="/">Home</a>
+<nav style="background-color: #333; color: white; padding: 10px 20px;">
+    <a href="/" style="color: white; margin-right: 20px;">Home</a>
 
     <!-- Show profile link if user is logged in -->
     <span sec:authorize="isAuthenticated()">
         <!-- Show profile link -->
-        <a href="/profile">Profile</a>
+        <a href="/profile" style="color: white; margin-right: 20px;">Profile</a>
 
         <!-- Check if user has admin role -->
         <span sec:authorize="hasRole('ROLE_ADMIN')">
-            <a href="/admin/registration">Register admin</a>
-            <a href="/admin/categories/add">Add category</a>
-            <a href="/admin/categories">View categories</a>
-            <a href="/admin/offers">View offers</a>
-            <a href="/admin/applications">View applications</a>
-            <a href="/admin/employers">View employers</a>
-            <a href="/admin/candidates">View candidates</a>
+            <a href="/admin/registration" style="color: white; margin-right: 20px;">Register admin</a>
+            <a href="/admin/categories/add" style="color: white; margin-right: 20px;">Add category</a>
+            <a href="/admin/categories" style="color: white; margin-right: 20px;">View categories</a>
+            <a href="/admin/offers" style="color: white; margin-right: 20px;">View offers</a>
+            <a href="/admin/applications" style="color: white; margin-right: 20px;">View applications</a>
+            <a href="/admin/employers" style="color: white; margin-right: 20px;">View employers</a>
+            <a href="/admin/candidates" style="color: white; margin-right: 20px;">View candidates</a>
         </span>
 
         <!-- Check if user has employer role -->
         <span sec:authorize="hasRole('ROLE_EMPLOYER')">
-            <a href="/employer/offers/add">Add offer</a>
-            <a href="/employer/offers/show">My offers</a>
+            <a href="/employer/offers/add" style="color: white; margin-right: 20px;">Add offer</a>
+            <a href="/employer/offers/show" style="color: white; margin-right: 20px;">My offers</a>
         </span>
 
         <!-- Check if user has candidate role -->
         <span sec:authorize="hasRole('ROLE_CANDIDATE')">
-            <a href="/candidate/applications">My applications</a>
+            <a href="/candidate/applications" style="color: white; margin-right: 20px;">My applications</a>
         </span>
 
         <!-- Logout link -->
         <form th:action="@{/logout}" th:method="POST" style="display: inline;">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-            <input type="submit" value="Logout" />
+            <input type="submit" value="Logout" style="background-color: #333; color: white; border: none; cursor: pointer;"/>
         </form>
     </span>
 
     <!-- Show login and signup links if user is not logged in -->
     <span sec:authorize="!isAuthenticated()">
-        <a href="/auth/login">Login</a>
-        <a href="/auth/registration">Sign Up</a>
+        <a href="/auth/login" style="color: white; margin-right: 20px;">Login</a>
+        <a href="/auth/registration" style="color: white; margin-right: 20px;">Sign Up</a>
     </span>
 </nav>

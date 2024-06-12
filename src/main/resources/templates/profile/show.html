@@ -4,12 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
-
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
         .profile-picture {
-            width: 200px; /* Adjust the width as needed */
-            height: 200px; /* Adjust the height as needed */
-            object-fit: cover; /* This keeps the aspect ratio while fitting the image within the specified dimensions */
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f2f2f2;
         }
     </style>
 </head>
@@ -18,118 +46,102 @@
 <!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
 
-<p>
-    <b>First name: </b>
-    <span th:text="${person.getFirstName()}">First name</span>
-</p>
-<p>
-    <b>Last name: </b>
-    <span th:text="${person.getLastName()}">Last name</span>
-</p>
-<p>
-    <b>Email: </b>
-    <span th:text="${person.getEmail()}">Email</span>
-</p>
-<p>
-    <b>Phone number: </b>
-    <span th:text="${person.getPhone()}">Phone number</span>
-</p>
-<p>
-    <b>Location: </b>
-    <span th:text="${person.getLocation()}">Location</span>
-</p>
+<div class="container">
+    <h1>Profile</h1>
+    <p><b>First name:</b> <span th:text="${person.getFirstName()}">First name</span></p>
+    <p><b>Last name:</b> <span th:text="${person.getLastName()}">Last name</span></p>
+    <p><b>Email:</b> <span th:text="${person.getEmail()}">Email</span></p>
+    <p><b>Phone number:</b> <span th:text="${person.getPhone()}">Phone number</span></p>
+    <p><b>Location:</b> <span th:text="${person.getLocation()}">Location</span></p>
+    <p><b>Account created at:</b> <span th:text="${#temporals.format(person.createdAt, 'dd-MM-yyyy HH:mm:ss')}">Created at</span></p>
 
-<p>
-    <b>Account created at: </b>
-    <span th:text="${#temporals.format(person.createdAt, 'dd-MM-yyyy HH:mm:ss')}">Created at</span>
-</p>
-
-<div th:if="${person.getPicture() != null}">
-    <img th:src="@{/images/{id}/profile-picture(id=${person.id})}" alt="Profile Picture" class="profile-picture" />
-    <br/>
-</div>
-
-<div th:if="${person.getRole().equals('ROLE_CANDIDATE') && person.getResumePdf() != null}">
-    <a th:href="@{/resume/{id}(id=${person.id})}" th:download="'resume_' + ${person.firstName} + '_' + ${person.lastName} + '.pdf'">Download resume</a>
-    <br/>
-</div>
-
-<div th:if="${person.getRole().equals('ROLE_CANDIDATE')}">
-    <h2>Bio</h2>
-    <p th:if="${person.getAboutMe() != null}" th:text="${person.getAboutMe()}">bio</p>
-    <p th:if="${person.getAboutMe() == null}">No bio yet</p>
-
-    <h2>Qualifications</h2>
-    <p th:if="${qualifications.isEmpty()}">No qualifications yet</p>
-    <div th:if="${!qualifications.isEmpty()}">
-        <table>
-            <tr>
-                <th>Degree</th>
-                <th>University</th>
-                <th>Start date</th>
-                <th>End date</th>
-            </tr>
-
-            <div th:each="qualififcation : ${qualifications}">
-                <tr>
-                    <th th:text="${qualififcation.getDegree()}">Degree</th>
-                    <th th:text="${qualififcation.getUniversity()}">University</th>
-                    <th th:text="${#temporals.format(qualififcation.getStartDate(), 'dd-MM-yyyy')}">Start date</th>
-                    <th th:text="${#temporals.format(qualififcation.getEndDate(), 'dd-MM-yyyy')}">End date</th>
-                </tr>
-            </div>
-        </table>
+    <div th:if="${person.getPicture() != null}">
+        <img th:src="@{/images/{id}/profile-picture(id=${person.id})}" alt="Profile Picture" class="profile-picture" />
     </div>
 
-    <h2>Skills</h2>
-    <p th:if="${skills.isEmpty()}">No skills yet</p>
-    <div th:if="${!skills.isEmpty()}">
-        <table>
-            <tr>
-                <th>Skill</th>
-                <th>Experience</th>
-            </tr>
-
-            <div th:each="skill : ${skills}">
-                <tr>
-                    <th th:text="${skill.getSkillName()}">Skill</th>
-                    <th th:text="${skill.getExperience()}">Experience</th>
-                </tr>
-            </div>
-        </table>
+    <div th:if="${person.getRole().equals('ROLE_CANDIDATE') && person.getResumePdf() != null}">
+        <a th:href="@{/resume/{id}(id=${person.id})}" th:download="'resume_' + ${person.firstName} + '_' + ${person.lastName} + '.pdf'">Download resume</a>
     </div>
 
-    <h2>Work experience</h2>
-    <p th:if="${work_experiences.isEmpty()}">No work experience yet</p>
-    <div th:if="${!work_experiences.isEmpty()}">
-        <table>
-            <tr>
-                <th>Company name</th>
-                <th>Position</th>
-                <th>Start date</th>
-                <th>End date</th>
-            </tr>
+    <div th:if="${person.getRole().equals('ROLE_CANDIDATE')}">
+        <h2>Bio</h2>
+        <p th:if="${person.getAboutMe() != null}" th:text="${person.getAboutMe()}">bio</p>
+        <p th:if="${person.getAboutMe() == null}">No bio yet</p>
 
-            <div th:each="work_experience : ${work_experiences}">
+        <h2>Qualifications</h2>
+        <p th:if="${qualifications.isEmpty()}">No qualifications yet</p>
+        <div th:if="${!qualifications.isEmpty()}">
+            <table>
+                <thead>
                 <tr>
-                    <th th:text="${work_experience.getCompanyName()}">Company name</th>
-                    <th th:text="${work_experience.getPosition()}">Position</th>
-                    <th th:text="${#temporals.format(work_experience.getStartDate(), 'dd-MM-yyyy')}">Start date</th>
-                    <th th:text="${#temporals.format(work_experience.getEndDate(), 'dd-MM-yyyy')}">End date</th>
+                    <th>Degree</th>
+                    <th>University</th>
+                    <th>Start date</th>
+                    <th>End date</th>
                 </tr>
-            </div>
-        </table>
+                </thead>
+                <tbody>
+                <tr th:each="qualification : ${qualifications}">
+                    <td th:text="${qualification.getDegree()}">Degree</td>
+                    <td th:text="${qualification.getUniversity()}">University</td>
+                    <td th:text="${#temporals.format(qualification.getStartDate(), 'dd-MM-yyyy')}">Start date</td>
+                    <td th:text="${#temporals.format(qualification.getEndDate(), 'dd-MM-yyyy')}">End date</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Skills</h2>
+        <p th:if="${skills.isEmpty()}">No skills yet</p>
+        <div th:if="${!skills.isEmpty()}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Skill</th>
+                    <th>Experience</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="skill : ${skills}">
+                    <td th:text="${skill.getSkillName()}">Skill</td>
+                    <td th:text="${skill.getExperience()}">Experience</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Work experience</h2>
+        <p th:if="${work_experiences.isEmpty()}">No work experience yet</p>
+        <div th:if="${!work_experiences.isEmpty()}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Company name</th>
+                    <th>Position</th>
+                    <th>Start date</th>
+                    <th>End date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="work_experience : ${work_experiences}">
+                    <td th:text="${work_experience.getCompanyName()}">Company name</td>
+                    <td th:text="${work_experience.getPosition()}">Position</td>
+                    <td th:text="${#temporals.format(work_experience.getStartDate(), 'dd-MM-yyyy')}">Start date</td>
+                    <td th:text="${#temporals.format(work_experience.getEndDate(), 'dd-MM-yyyy')}">End date</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-<!-- Only show the Edit and Delete buttons if the currently logged-in user is the owner of the profile -->
-<div th:if="${person.username eq userId}">
-    <a th:href="@{/profile/{id}/edit(id=${person.getId()})}">Edit profile</a>
-
-    <form th:method="DELETE" th:action="@{/profile/{id}(id=${person.getId()})}">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <input type="submit" value="Delete"/>
-    </form>
+    <!-- Only show the Edit and Delete buttons if the currently logged-in user is the owner of the profile -->
+    <div th:if="${person.username eq userId}">
+        <a th:href="@{/profile/{id}/edit(id=${person.getId()})}">Edit profile</a>
+        <form th:method="DELETE" th:action="@{/profile/{id}(id=${person.getId()})}" style="display: inline;">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <input type="submit" value="Delete"/>
+        </form>
+    </div>
 </div>
 
 </body>

@@ -3,25 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <title>Update Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form label {
+            margin: 10px 0 5px;
+        }
+        form select {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        form button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
 
 <!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
 
-<h1>Update Application Status</h1>
-
-<form th:action="@{/employer/application/{id}/status(id=${my_application.id})}" th:method="POST">
-    <label for="status">Status: </label>
-    <select id="status" name="status">
-        <option value="Shortlisted">Shortlisted</option>
-        <option value="Rejected">Rejected</option>
-        <option value="Applied">Applied</option>
-        <option value="Cancelled">Cancelled</option>
-    </select>
-    <br/>
-    <button type="submit">Update status</button>
-</form>
+<div class="container">
+    <h1>Update Application Status</h1>
+    <form th:action="@{/employer/application/{id}/status(id=${my_application.id})}" th:method="POST">
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Applied">Applied</option>
+            <option value="Cancelled">Cancelled</option>
+        </select>
+        <button type="submit">Update status</button>
+    </form>
+</div>
 
 </body>
 </html>

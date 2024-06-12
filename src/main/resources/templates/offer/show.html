@@ -1,58 +1,116 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Find Job</title>
-
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
         .company-logo {
-            width: 100px; /* Adjust the width as needed */
-            height: 100px; /* Adjust the height as needed */
-            object-fit: cover; /* This keeps the aspect ratio while fitting the image within the specified dimensions */
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .job-listing {
+            background-color: #fff;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        .job-details {
+            margin-left: 20px;
+        }
+        .job-details h2 {
+            margin: 0;
+        }
+        form {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form label {
+            margin: 10px 0;
+        }
+        form select, form input {
+            margin: 0 10px 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex: 1 1 200px;
+        }
+        form button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            flex: 1 1 100px;
+        }
+        form button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-
-<!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
+<div class="container">
+    <form th:action="@{/offer/search}" th:object="${searchCriteria}" method="get">
+        <label for="category">Category:</label>
+        <select id="category" th:field="*{categoryId}">
+            <option th:each="category : ${offerCategories}" th:value="${category.id}" th:text="${category.category}"></option>
+        </select>
 
-<form th:action="@{/offer/search}" th:object="${searchCriteria}" method="get">
-    <label for="category">Category:</label>
-    <select id="category" th:field="*{categoryId}">
-        <option th:each="category : ${offerCategories}" th:value="${category.id}" th:text="${category.category}"></option>
-    </select>
+        <label for="offerType">Type:</label>
+        <select id="offerType" th:field="*{offerType}">
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Practice / Internship">Practice / Internship</option>
+            <option value="Freelance">Freelance</option>
+        </select>
 
-    <label for="offerType">Type:</label>
-    <select id="offerType" th:field="*{offerType}">
-        <option value="Full-time">Full-time</option>
-        <option value="Part-time">Part-time</option>
-        <option value="Practice / Internship">Practice / Internship</option>
-        <option value="Freelance">Freelance</option>
-    </select>
+        <label for="minSalary">Min Salary:</label>
+        <input type="number" id="minSalary" th:field="*{minSalary}" />
 
-    <label for="minSalary">Min Salary:</label>
-    <input type="number" id="minSalary" th:field="*{minSalary}" />
+        <label for="maxSalary">Max Salary:</label>
+        <input type="number" id="maxSalary" th:field="*{maxSalary}" />
 
-    <label for="maxSalary">Max Salary:</label>
-    <input type="number" id="maxSalary" th:value="*{maxSalary}" />
+        <button type="submit">Search</button>
+    </form>
 
-    <button type="submit">Search</button>
-</form>
-
-<div th:each="offer : ${offers}">
-    <img th:src="@{/images/{id}/company-logo(id=${offer.id})}" alt="Profile Picture" class="company-logo" />
-    <a th:href="@{/offer/{id}(id = ${offer.id})}">
-        <h1 th:text="${offer.title}">Title</h1>
-    </a>
-    <p th:text="${offer.description}">Description</p>
-    <p th:text="${offer.offerCategory.category}">Category</p>
-    <span>
-        <p th:text="${offer.offerType}">Type</p>
-        <p th:text="${offer.minSalary} + ' - ' + ${offer.maxSalary} + ' PLN'">Salary range</p>
-        <p th:text="${offer.minExperienceYears} + ' - ' + ${offer.maxExperienceYears} + ' years'">Experience range</p>
-    </span>
+    <div th:each="offer : ${offers}" class="job-listing">
+        <img th:src="@{/images/{id}/company-logo(id=${offer.id})}" alt="Company Logo" class="company-logo" />
+        <div class="job-details">
+            <a th:href="@{/offer/{id}(id=${offer.id})}">
+                <h2 th:text="${offer.title}">Title</h2>
+            </a>
+            <p th:text="${offer.description}">Description</p>
+            <p th:text="${offer.offerCategory.category}">Category</p>
+            <p>
+                <span th:text="${offer.offerType}">Type</span> |
+                <span th:text="${offer.minSalary} + ' - ' + ${offer.maxSalary} + ' PLN'">Salary range</span> |
+                <span th:text="${offer.minExperienceYears} + ' - ' + ${offer.maxExperienceYears} + ' years'">Experience range</span>
+            </p>
+        </div>
+    </div>
 </div>
-
 </body>
 </html>

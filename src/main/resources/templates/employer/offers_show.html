@@ -3,12 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>My offers</title>
-
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
         .company-logo {
-            width: 100px; /* Adjust the width as needed */
-            height: 100px; /* Adjust the height as needed */
-            object-fit: cover; /* This keeps the aspect ratio while fitting the image within the specified dimensions */
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .action-buttons form {
+            display: inline;
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -17,48 +48,51 @@
 <!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
 
-<table>
-    <tr>
-        <th>Company name</th>
-        <th>Company logo</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Category</th>
-        <th>Type</th>
-        <th>Salary range</th>
-        <th>Experience</th>
-        <th>Skills required</th>
-        <th>Location</th>
-        <th>Posted at</th>
-        <th>Application count</th>
-        <th>Action</th>
-    </tr>
-
-    <tr th:each="offer : ${offers}">
-        <th th:text="${offer.companyName}">Company name</th>
-        <th>
-            <img th:src="@{/images/{id}/company-logo(id=${offer.id})}" alt="Profile Picture" class="company-logo" />
-        </th>
-        <th th:text="${offer.title}">Title</th>
-        <th th:text="${offer.description}">Description</th>
-        <th th:text="${offer.offerCategory.category}">Category</th>
-        <th th:text="${offer.offerType}">Type</th>
-        <th th:text="${offer.minSalary} + ' - ' + ${offer.maxSalary} + ' PLN'">Salary range</th>
-        <th th:text="${offer.minExperienceYears} + ' - ' + ${offer.maxExperienceYears} + ' years'">Experience</th>
-        <th th:text="${offer.requiredSkills}">Skills required</th>
-        <th th:text="${offer.location}">Location</th>
-        <th th:text="${#temporals.format(offer.postedAt, 'dd-MM-yyyy HH:mm:ss')}">Posted at</th>
-        <th th:text="${offer.applicationCount}">Application count</th>
-        <th>
-            <a th:href="@{/employer/offer/{id}(id=${offer.id})}">Applications</a>
-
-            <form th:action="@{/employer/offer/{id}(id=${offer.id})}" th:method="DELETE">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                <button type="submit">Delete</button>
-            </form>
-        </th>
-    </tr>
-</table>
+<div class="container">
+    <h1>My Offers</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Company name</th>
+            <th>Company logo</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Salary range</th>
+            <th>Experience</th>
+            <th>Skills required</th>
+            <th>Location</th>
+            <th>Posted at</th>
+            <th>Application count</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="offer : ${offers}">
+            <td th:text="${offer.companyName}">Company name</td>
+            <td><img th:src="@{/images/{id}/company-logo(id=${offer.id})}" alt="Profile Picture" class="company-logo" /></td>
+            <td th:text="${offer.title}">Title</td>
+            <td th:text="${offer.description}">Description</td>
+            <td th:text="${offer.offerCategory.category}">Category</td>
+            <td th:text="${offer.offerType}">Type</td>
+            <td th:text="${offer.minSalary} + ' - ' + ${offer.maxSalary} + ' PLN'">Salary range</td>
+            <td th:text="${offer.minExperienceYears} + ' - ' + ${offer.maxExperienceYears} + ' years'">Experience</td>
+            <td th:text="${offer.requiredSkills}">Skills required</td>
+            <td th:text="${offer.location}">Location</td>
+            <td th:text="${#temporals.format(offer.postedAt, 'dd-MM-yyyy HH:mm:ss')}">Posted at</td>
+            <td th:text="${offer.applicationCount}">Application count</td>
+            <td class="action-buttons">
+                <a th:href="@{/employer/offer/{id}(id=${offer.id})}">Applications</a>
+                <form th:action="@{/employer/offer/{id}(id=${offer.id})}" th:method="DELETE">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

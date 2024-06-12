@@ -3,62 +3,102 @@
 <head>
   <meta charset="UTF-8">
   <title>Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .registration-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+    .registration-container h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .registration-container label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    .registration-container input[type="text"],
+    .registration-container input[type="password"],
+    .registration-container select {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .registration-container input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .registration-container input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    .registration-container .error-message {
+      color: red;
+      margin-top: -10px;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
+<div class="registration-container">
+  <h1>Register</h1>
+  <form th:method="POST" th:action="@{/auth/registration}" th:object="${person}">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-<form th:method="POST" th:action="@{/auth/registration}" th:object="${person}">
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <label for="role">Role:</label>
+    <select id="role" name="role">
+      <option value="ROLE_CANDIDATE">Candidate</option>
+      <option value="ROLE_EMPLOYER">Employer</option>
+    </select>
+    <div th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="error-message">Role Error</div>
 
-  <label for="role">Role:</label>
-  <select id="role" name="role">
-    <option value="ROLE_CANDIDATE">Candidate</option>
-    <option value="ROLE_EMPLOYER">Employer</option>
-  </select>
-  <div style="color:red" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role Error</div>
-  <br/>
+    <label for="username">Username:</label>
+    <input type="text" th:field="*{username}" id="username"/>
+    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message">Username Error</div>
 
-  <label for="username">Username: </label>
-  <input type="text" th:field="*{username}" id="username"/>
-  <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
-  <br/>
+    <label for="password">Password:</label>
+    <input type="password" th:field="*{password}" id="password"/>
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message">Password Error</div>
 
-  <label for="password">Password: </label>
-  <input type="password" th:field="*{password}" id="password"/>
-  <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
-  <br/>
+    <label for="firstName">First name:</label>
+    <input type="text" th:field="*{firstName}" id="firstName"/>
+    <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error-message">First name Error</div>
 
-  <label for="firstName">First name: </label>
-  <input type="text" th:field="*{firstName}" id="firstName"/>
-  <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name Error
-  </div>
-  <br/>
+    <label for="lastName">Last name:</label>
+    <input type="text" th:field="*{lastName}" id="lastName"/>
+    <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error-message">Last name Error</div>
 
-  <label for="lastName">Last name: </label>
-  <input type="text" th:field="*{lastName}" id="lastName"/>
-  <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name Error
-  </div>
-  <br/>
+    <label for="email">Email:</label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message">Email Error</div>
 
-  <label for="email">Email: </label>
-  <input type="text" th:field="*{email}" id="email"/>
-  <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error
-  </div>
-  <br/>
+    <label for="phone">Phone number:</label>
+    <input type="text" th:field="*{phone}" id="phone"/>
+    <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message">Phone number Error</div>
 
-  <label for="phone">Phone number: </label>
-  <input type="text" th:field="*{phone}" id="phone"/>
-  <div style="color:red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone number Error
-  </div>
-  <br/>
+    <label for="location">Location:</label>
+    <input type="text" th:field="*{location}" id="location"/>
+    <div th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="error-message">Location Error</div>
 
-  <label for="location">Location: </label>
-  <input type="text" th:field="*{location}" id="location"/>
-  <div style="color:red" th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Location Error
-  </div>
-  <br/>
-
-  <input type="submit" value="Sign up!"/>
-</form>
-
+    <input type="submit" value="Sign up!"/>
+  </form>
+</div>
 </body>
 </html>

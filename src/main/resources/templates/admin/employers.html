@@ -3,33 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>All employers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
 
 <!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
 
-<table>
-    <tr>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Email</th>
-        <th>Phone number</th>
-        <th>Location</th>
-        <th>Created at</th>
-    </tr>
-
-    <div th:each="employer : ${employers}">
+<div class="container">
+    <h1>All Employers</h1>
+    <table>
+        <thead>
         <tr>
-            <th th:text="${employer.getFirstName()}">First name</th>
-            <th th:text="${employer.getLastName()}">Last name</th>
-            <th th:text="${employer.getEmail()}">Email</th>
-            <th th:text="${employer.getPhone()}">Phone number</th>
-            <th th:text="${employer.getLocation()}">Location</th>
-            <th th:text="${#temporals.format(employer.createdAt, 'dd-MM-yyyy HH:mm:ss')}">Created at</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            <th>Location</th>
+            <th>Created at</th>
         </tr>
-    </div>
-</table>
+        </thead>
+        <tbody>
+        <tr th:each="employer : ${employers}">
+            <td th:text="${employer.getFirstName()}">First name</td>
+            <td th:text="${employer.getLastName()}">Last name</td>
+            <td th:text="${employer.getEmail()}">Email</td>
+            <td th:text="${employer.getPhone()}">Phone number</td>
+            <td th:text="${employer.getLocation()}">Location</td>
+            <td th:text="${#temporals.format(employer.createdAt, 'dd-MM-yyyy HH:mm:ss')}">Created at</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

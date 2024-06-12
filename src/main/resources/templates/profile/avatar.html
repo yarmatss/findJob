@@ -1,18 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Profile picture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form input[type="file"] {
+            margin-bottom: 20px;
+        }
+        form button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
 
 <!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
 
-<form th:action="@{/profile/{id}/avatar(id=${person.getId()})}" th:method="PATCH" enctype="multipart/form-data">
-    <input type="file" name="profilePicture" accept="image/*" />
-    <button type="submit">Upload avatar</button>
-</form>
+<div class="container">
+    <h1>Profile Picture</h1>
+    <form th:action="@{/profile/{id}/avatar(id=${person.getId()})}" th:method="PATCH" enctype="multipart/form-data">
+        <input type="file" name="profilePicture" accept="image/*" />
+        <button type="submit">Upload avatar</button>
+    </form>
+</div>
 
 </body>
 </html>

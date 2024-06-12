@@ -3,53 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <title>All applications</title>
-
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
         .company-logo {
-            width: 100px; /* Adjust the width as needed */
-            height: 100px; /* Adjust the height as needed */
-            object-fit: cover; /* This keeps the aspect ratio while fitting the image within the specified dimensions */
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%;
         }
     </style>
 </head>
 <body>
-
 <!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
 
-<table>
-    <tr>
-        <th>Company name</th>
-        <th>Company logo</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Category</th>
-        <th>Type</th>
-        <th>Salary range</th>
-        <th>Experience</th>
-        <th>Skills required</th>
-        <th>Location</th>
-        <th>Application id</th>
-        <th>Applied at</th>
-        <th>Status</th>
-    </tr>
-
-    <tr th:each="my_application : ${applications}">
-        <th th:text="${my_application.offer.companyName}">Company name</th>
-        <th><img th:src="@{/images/{id}/company-logo(id=${my_application.offer.companyLogo.id})}" alt="Profile Picture" class="company-logo" /></th>
-        <th th:text="${my_application.offer.title}">Title</th>
-        <th th:text="${my_application.offer.description}">Description</th>
-        <th th:text="${my_application.offer.offerCategory.category}">Category</th>
-        <th th:text="${my_application.offer.offerType}">Type</th>
-        <th th:text="${my_application.offer.minSalary} + ' - ' + ${my_application.offer.maxSalary} + ' PLN'">Salary range</th>
-        <th th:text="${my_application.offer.minExperienceYears} + ' - ' + ${my_application.offer.maxExperienceYears} + ' years'">Experience</th>
-        <th th:text="${my_application.offer.requiredSkills}">Skills required</th>
-        <th th:text="${my_application.offer.location}">Location</th>
-        <th th:text="${my_application.id}">Application id</th>
-        <th th:text="${#temporals.format(my_application.applicationDate, 'dd-MM-yyyy HH:mm:ss')}">Applied at</th>
-        <th th:text="${my_application.status}">Application status</th>
-    </tr>
-</table>
-
+<div class="container">
+    <h1>All Applications</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Company name</th>
+            <th>Company logo</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Candidate</th>
+            <th>Location</th>
+            <th>Application id</th>
+            <th>Applied at</th>
+            <th>Status</th>
+            <th>Task solution</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="my_application : ${applications}">
+            <td th:text="${my_application.offer.companyName}">Company name</td>
+            <td><img th:src="@{/images/{id}/company-logo(id=${my_application.offer.companyLogo.id})}" alt="Profile Picture" class="company-logo" /></td>
+            <td th:text="${my_application.offer.title}">Title</td>
+            <td th:text="${my_application.offer.offerCategory.category}">Category</td>
+            <td th:text="${my_application.offer.offerType}">Type</td>
+            <td th:text="${my_application.person.firstName} + ' ' + ${my_application.person.lastName}">Candidate name</td>
+            <td th:text="${my_application.person.location}">Location</td>
+            <td th:text="${my_application.id}">Application id</td>
+            <td th:text="${#temporals.format(my_application.applicationDate, 'dd-MM-yyyy HH:mm:ss')}">Applied at</td>
+            <td th:text="${my_application.status}">Application status</td>
+            <td th:if="${my_application.status.equals('Applied') && my_application.resumePdf != null}">
+                <a th:href="@{/task/{id}(id=${my_application.id})}"
+                   th:download="${my_application.getPerson().getFirstName()} + '_' +
+                        ${my_application.getPerson().getLastName()} + '_solution.pdf'">Download solution</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

@@ -3,87 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <title>Add offer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form label {
+            margin: 10px 0 5px;
+        }
+        form input[type="text"],
+        form input[type="file"],
+        form select {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        form input[type="submit"] {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
 
 <!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
 
-<form th:method="POST" th:action="@{/employer/offers/add}" th:object="${offer}" enctype="multipart/form-data">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+<div class="container">
+    <h1>Add Offer</h1>
+    <form th:method="POST" th:action="@{/employer/offers/add}" th:object="${offer}" enctype="multipart/form-data">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-    <label for="title">Title: </label>
-    <input type="text" th:field="*{title}" id="title"/>
-    <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</div>
-    <br/>
+        <label for="title">Title:</label>
+        <input type="text" th:field="*{title}" id="title"/>
+        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error-message">Title Error</div>
 
-    <label for="description">Description: </label>
-    <input type="text" th:field="*{description}" id="description"/>
-    <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
-    <br/>
+        <label for="description">Description:</label>
+        <input type="text" th:field="*{description}" id="description"/>
+        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error-message">Description Error</div>
 
-    <label for="offerCategory">Category:</label>
-    <select id="offerCategory" name="offerCategory">
-        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.category}">category</option>
-    </select>
-    <div style="color:red" th:if="${#fields.hasErrors('offerCategory')}" th:errors="*{offerCategory}">Category Error</div>
-    <br/>
+        <label for="offerCategory">Category:</label>
+        <select id="offerCategory" th:field="*{offerCategory}">
+            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.category}">category</option>
+        </select>
+        <div th:if="${#fields.hasErrors('offerCategory')}" th:errors="*{offerCategory}" class="error-message">Category Error</div>
 
-    <label for="offerType">Type:</label>
-    <select id="offerType" name="offerType">
-        <option value="Full-time">Full-time</option>
-        <option value="Part-time">Part-time</option>
-        <option value="Practice / Internship">Practice / Internship</option>
-        <option value="Freelance">Freelance</option>
-    </select>
-    <div style="color:red" th:if="${#fields.hasErrors('offerType')}" th:errors="*{offerType}">Type Error</div>
-    <br/>
+        <label for="offerType">Type:</label>
+        <select id="offerType" th:field="*{offerType}">
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Practice / Internship">Practice / Internship</option>
+            <option value="Freelance">Freelance</option>
+        </select>
+        <div th:if="${#fields.hasErrors('offerType')}" th:errors="*{offerType}" class="error-message">Type Error</div>
 
-    <label for="companyName">Company name: </label>
-    <input type="text" th:field="*{companyName}" id="companyName"/>
-    <div style="color:red" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}">Company name Error</div>
-    <br/>
+        <label for="companyName">Company name:</label>
+        <input type="text" th:field="*{companyName}" id="companyName"/>
+        <div th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}" class="error-message">Company name Error</div>
 
-    <label for="companyLogo">Company logo: </label>
-    <input type="file" id="companyLogo" name="company_logo" accept="image/*" />
-    <br/>
+        <label for="companyLogo">Company logo:</label>
+        <input type="file" id="companyLogo" name="company_logo" accept="image/*" />
 
-    <label for="requiredSkills">Required skills: </label>
-    <input type="text" th:field="*{requiredSkills}" id="requiredSkills"/>
-    <div style="color:red" th:if="${#fields.hasErrors('requiredSkills')}" th:errors="*{requiredSkills}">Required skills Error</div>
-    <br/>
+        <label for="requiredSkills">Required skills:</label>
+        <input type="text" th:field="*{requiredSkills}" id="requiredSkills"/>
+        <div th:if="${#fields.hasErrors('requiredSkills')}" th:errors="*{requiredSkills}" class="error-message">Required skills Error</div>
 
-    <label for="minSalary">Minimum salary: </label>
-    <input type="text" th:field="*{minSalary}" id="minSalary"/>
-    <div style="color:red" th:if="${#fields.hasErrors('minSalary')}" th:errors="*{minSalary}">Minimum salary Error</div>
-    <br/>
+        <label for="minSalary">Minimum salary:</label>
+        <input type="text" th:field="*{minSalary}" id="minSalary"/>
+        <div th:if="${#fields.hasErrors('minSalary')}" th:errors="*{minSalary}" class="error-message">Minimum salary Error</div>
 
-    <label for="maxSalary">Maximum salary: </label>
-    <input type="text" th:field="*{maxSalary}" id="maxSalary"/>
-    <div style="color:red" th:if="${#fields.hasErrors('maxSalary')}" th:errors="*{maxSalary}">Maximum salary Error</div>
-    <br/>
+        <label for="maxSalary">Maximum salary:</label>
+        <input type="text" th:field="*{maxSalary}" id="maxSalary"/>
+        <div th:if="${#fields.hasErrors('maxSalary')}" th:errors="*{maxSalary}" class="error-message">Maximum salary Error</div>
 
-    <label for="minExperienceYears">Minimum experience years: </label>
-    <input type="text" th:field="*{minExperienceYears}" id="minExperienceYears"/>
-    <div style="color:red" th:if="${#fields.hasErrors('minExperienceYears')}" th:errors="*{minExperienceYears}">Minimum experience years Error</div>
-    <br/>
+        <label for="minExperienceYears">Minimum experience years:</label>
+        <input type="text" th:field="*{minExperienceYears}" id="minExperienceYears"/>
+        <div th:if="${#fields.hasErrors('minExperienceYears')}" th:errors="*{minExperienceYears}" class="error-message">Minimum experience years Error</div>
 
-    <label for="maxExperienceYears">Maximum experience years: </label>
-    <input type="text" th:field="*{maxExperienceYears}" id="maxExperienceYears"/>
-    <div style="color:red" th:if="${#fields.hasErrors('maxExperienceYears')}" th:errors="*{maxExperienceYears}">Maximum experience years Error</div>
-    <br/>
+        <label for="maxExperienceYears">Maximum experience years:</label>
+        <input type="text" th:field="*{maxExperienceYears}" id="maxExperienceYears"/>
+        <div th:if="${#fields.hasErrors('maxExperienceYears')}" th:errors="*{maxExperienceYears}" class="error-message">Maximum experience years Error</div>
 
-    <label for="location">Location: </label>
-    <input type="text" th:field="*{location}" id="location"/>
-    <div style="color:red" th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Location Error</div>
-    <br/>
+        <label for="location">Location:</label>
+        <input type="text" th:field="*{location}" id="location"/>
+        <div th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="error-message">Location Error</div>
 
-    <label for="resumePdf">Upload task (pdf format): </label>
-    <input type="file" id="resumePdf" name="resume_file" accept=".pdf" />
-    <br/>
+        <label for="resumePdf">Upload task (pdf format):</label>
+        <input type="file" id="resumePdf" name="resume_file" accept=".pdf" />
 
-    <input type="submit" value="Add offer"/>
-</form>
+        <input type="submit" value="Add offer"/>
+    </form>
+</div>
 
 </body>
 </html>

@@ -2,9 +2,8 @@ package com.findjob.controllers;
 
 import com.findjob.models.OfferCategory;
 import com.findjob.models.Person;
-import com.findjob.services.OfferCategoriesService;
-import com.findjob.services.PeopleService;
-import com.findjob.services.RegistrationService;
+import com.findjob.models.SearchCriteria;
+import com.findjob.services.*;
 import com.findjob.util.PersonValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -23,19 +20,26 @@ public class AdminController {
     private final PersonValidator personValidator;
     private final OfferCategoriesService offerCategoriesService;
     private final PeopleService peopleService;
+    private final OffersService offersService;
+    private final ApplicationsService applicationsService;
 
     @Autowired
     public AdminController(RegistrationService registrationService, PersonValidator personValidator,
-                           OfferCategoriesService offerCategoriesService, PeopleService peopleService) {
+                           OfferCategoriesService offerCategoriesService, PeopleService peopleService, OffersService offersService, ApplicationsService applicationsService) {
         this.registrationService = registrationService;
         this.personValidator = personValidator;
         this.offerCategoriesService = offerCategoriesService;
         this.peopleService = peopleService;
+        this.offersService = offersService;
+        this.applicationsService = applicationsService;
     }
 
     @GetMapping()
-    public String admin() {
-        return "admin/index";
+    public String admin(Model model) {
+        model.addAttribute("offerCategories", offerCategoriesService.findAll());
+        model.addAttribute("offers", offersService.findAll());
+        model.addAttribute("searchCriteria", new SearchCriteria());
+        return "offer/show";
     }
 
     @GetMapping("/registration")
@@ -111,5 +115,17 @@ public class AdminController {
     public String candidates(Model model) {
         model.addAttribute("candidates", peopleService.findAllCandidates());
         return "admin/candidates";
+    }
+
+    @GetMapping("/offers")
+    public String offers(Model model) {
+        model.addAttribute("offers", offersService.findAll());
+        return "admin/offers";
+    }
+
+    @GetMapping("/applications")
+    public String applications(Model model) {
+        model.addAttribute("applications", applicationsService.findAll());
+        return "admin/applications";
     }
 }

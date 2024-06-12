@@ -72,10 +72,10 @@ public class ProfileController {
 
         // Check if a new profile picture was uploaded
         if (profilePictureFile != null && !profilePictureFile.isEmpty()) {
-            ProfilePicture profilePicture = new ProfilePicture();
+            Picture profilePicture = new Picture();
             profilePicture.setPictureData(profilePictureFile.getBytes());
             profilePicture.setContentType(profilePictureFile.getContentType());
-            person.setProfilePicture(profilePicture);
+            person.setPicture(profilePicture);
             profilePicture.setPerson(person);
         }
 
@@ -89,8 +89,8 @@ public class ProfileController {
 
         // If no new profile picture or resume was uploaded, retain the existing ones
         Person existingPerson = peopleService.findById(id);
-        if (person.getProfilePicture() == null) {
-            person.setProfilePicture(existingPerson.getProfilePicture());
+        if (person.getPicture() == null) {
+            person.setPicture(existingPerson.getPicture());
         }
 
         if (person.getResumePdf() == null) {

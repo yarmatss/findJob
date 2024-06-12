@@ -3,22 +3,27 @@ package com.findjob.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
-@Table(name = "profile_picture")
-public class ProfilePicture {
+@Table(name = "picture")
+public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "profile_data")
+    @Column(name = "data")
     private byte[] pictureData;
 
-    @Column(name = "profile_picture_content_type")
+    @Column(name = "picture_content_type")
     private String contentType;
 
-    @OneToOne(mappedBy = "profilePicture")
+    @OneToOne(mappedBy = "picture")
     private Person person;
+
+    @OneToMany(mappedBy = "companyLogo")
+    private List<Offer> offers;
 }

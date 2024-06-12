@@ -18,4 +18,10 @@ public class ResumePdf {
 
     @OneToOne(mappedBy = "resumePdf")
     private Person person;
+
+    @OneToOne(mappedBy = "resumePdf")
+    private Offer offer;
+
+    @OneToOne(mappedBy = "resumePdf")
+    private Application application;
 }

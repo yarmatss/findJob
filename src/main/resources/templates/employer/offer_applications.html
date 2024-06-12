@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Applications</title>
+
+    <style>
+        .company-logo {
+            width: 100px; /* Adjust the width as needed */
+            height: 100px; /* Adjust the height as needed */
+            object-fit: cover; /* This keeps the aspect ratio while fitting the image within the specified dimensions */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="~{fragments/nav :: nav}"></th:block>
+
+<table>
+    <tr>
+        <th>Company name</th>
+        <th>Company logo</th>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Type</th>
+        <th>Candidate</th>
+        <th>Location</th>
+        <th>Application id</th>
+        <th>Applied at</th>
+        <th>Status</th>
+        <th>Action</th>
+        <th>Task solution</th>
+    </tr>
+
+    <tr th:each="my_application : ${applications}">
+        <th th:text="${my_application.offer.companyName}">Company name</th>
+        <th><img th:src="@{/images/{id}/company-logo(id=${my_application.offer.companyLogo.id})}" alt="Profile Picture" class="company-logo" /></th>
+        <th th:text="${my_application.offer.title}">Title</th>
+        <th th:text="${my_application.offer.offerCategory.category}">Category</th>
+        <th th:text="${my_application.offer.offerType}">Type</th>
+        <th th:text="${my_application.person.firstName} + ' ' + ${my_application.person.lastName}">Candidate name</th>
+        <th th:text="${my_application.person.location}">Location</th>
+        <th th:text="${my_application.id}">Application id</th>
+        <th th:text="${#temporals.format(my_application.applicationDate, 'dd-MM-yyyy HH:mm:ss')}">Applied at</th>
+        <th th:text="${my_application.status}">Application status</th>
+        <th th:if="${my_application.status.equals('Applied')}">
+            <a th:href="@{/employer/application/{id}/status(id=${my_application.id})}">Update status</a>
+        </th>
+        <th th:if="${my_application.status.equals('Applied') && my_application.resumePdf != null}">
+            <a th:href="@{/task/{id}(id=${my_application.id})}"
+               th:download="${my_application.getPerson().getFirstName()} + '_' +
+                ${my_application.getPerson().getLastName()} + '_solution.pdf'">Download solution</a>
+        </th>
+    </tr>
+</table>
+
+</body>
+</html>

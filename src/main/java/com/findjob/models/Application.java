@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -25,9 +25,13 @@ public class Application {
     @JoinColumn(name = "offer_id")
     private Offer offer;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resume_pdf_id", referencedColumnName = "id")
+    private ResumePdf resumePdf;
+
     @Column(name = "application_date")
-    @Temporal(TemporalType.DATE)
-    private LocalDate applicationDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime applicationDate;
 
     @Column(name = "status")
     @NotEmpty(message = "Status should not be empty")

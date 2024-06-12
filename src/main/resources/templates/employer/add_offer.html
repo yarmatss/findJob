@@ -9,7 +9,7 @@
 <!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
 
-<form th:method="POST" th:action="@{/employer/offers/add}" th:object="${offer}">
+<form th:method="POST" th:action="@{/employer/offers/add}" th:object="${offer}" enctype="multipart/form-data">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
     <label for="title">Title: </label>
@@ -44,10 +44,9 @@
     <div style="color:red" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}">Company name Error</div>
     <br/>
 
-    <form th:action="@{/employer/{id}/company_logo(id=${person.getId()})}" th:method="PATCH" enctype="multipart/form-data">
-        <input type="file" name="profilePicture" accept="image/*" />
-        <button type="submit">Upload avatar</button>
-    </form>
+    <label for="companyLogo">Company logo: </label>
+    <input type="file" id="companyLogo" name="company_logo" accept="image/*" />
+    <br/>
 
     <label for="requiredSkills">Required skills: </label>
     <input type="text" th:field="*{requiredSkills}" id="requiredSkills"/>
@@ -79,9 +78,8 @@
     <div style="color:red" th:if="${#fields.hasErrors('location')}" th:errors="*{location}">Location Error</div>
     <br/>
 
-    <label for="companyLogo">Company logo: </label>
-    <input type="text" th:field="*{companyLogo}" id="companyLogo"/>
-    <div style="color:red" th:if="${#fields.hasErrors('companyLogo')}" th:errors="*{companyLogo}">Company Error</div>
+    <label for="resumePdf">Upload task (pdf format): </label>
+    <input type="file" id="resumePdf" name="resume_file" accept=".pdf" />
     <br/>
 
     <input type="submit" value="Add offer"/>

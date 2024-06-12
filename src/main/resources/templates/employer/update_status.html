@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Status</title>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="~{fragments/nav :: nav}"></th:block>
+
+<h1>Update Application Status</h1>
+
+<form th:action="@{/employer/application/{id}/status(id=${my_application.id})}" th:method="POST">
+    <label for="status">Status: </label>
+    <select id="status" name="status">
+        <option value="Shortlisted">Shortlisted</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Applied">Applied</option>
+        <option value="Cancelled">Cancelled</option>
+    </select>
+    <br/>
+    <button type="submit">Update status</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>My offers</title>
+
+    <style>
+        .company-logo {
+            width: 100px; /* Adjust the width as needed */
+            height: 100px; /* Adjust the height as needed */
+            object-fit: cover; /* This keeps the aspect ratio while fitting the image within the specified dimensions */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="~{fragments/nav :: nav}"></th:block>
+
+<table>
+    <tr>
+        <th>Company name</th>
+        <th>Company logo</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Category</th>
+        <th>Type</th>
+        <th>Salary range</th>
+        <th>Experience</th>
+        <th>Skills required</th>
+        <th>Location</th>
+        <th>Posted at</th>
+        <th>Application count</th>
+    </tr>
+
+    <tr th:each="offer : ${offers}">
+        <th th:text="${offer.companyName}">Company name</th>
+        <th><img th:src="@{/images/{id}/company-logo(id=${offer.companyLogo.id})}" alt="Profile Picture" class="company-logo" /></th>
+        <th th:text="${offer.title}">Title</th>
+        <th th:text="${offer.description}">Description</th>
+        <th th:text="${offer.offerCategory.category}">Category</th>
+        <th th:text="${offer.offerType}">Type</th>
+        <th th:text="${offer.minSalary} + ' - ' + ${offer.maxSalary} + ' PLN'">Salary range</th>
+        <th th:text="${offer.minExperienceYears} + ' - ' + ${offer.maxExperienceYears} + ' years'">Experience</th>
+        <th th:text="${offer.requiredSkills}">Skills required</th>
+        <th th:text="${offer.location}">Location</th>
+        <th th:text="${#temporals.format(offer.postedAt, 'dd-MM-yyyy HH:mm:ss')}">Posted at</th>
+        <th th:text="${offer.applicationCount}">Application count</th>
+    </tr>
+</table>
+
+</body>
+</html>

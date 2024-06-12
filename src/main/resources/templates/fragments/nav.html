@@ -8,14 +8,19 @@
 
         <!-- Check if user has admin role -->
         <span sec:authorize="hasRole('ROLE_ADMIN')">
-            <a href="/admin">Admin panel</a>
+            <a href="/admin/registration">Register admin</a>
+            <a href="/admin/categories/add">Add category</a>
+            <a href="/admin/categories">View categories</a>
+            <a href="/admin/offers">View offers</a>
+            <a href="/admin/applications">View applications</a>
+            <a href="/admin/employers">View employers</a>
+            <a href="/admin/candidates">View candidates</a>
         </span>
 
         <!-- Check if user has employer role -->
         <span sec:authorize="hasRole('ROLE_EMPLOYER')">
             <a href="/employer/offers/add">Add offer</a>
             <a href="/employer/offers/show">My offers</a>
-            <a href="/employer/applications">Offer applications</a>
         </span>
 
         <!-- Check if user has candidate role -->

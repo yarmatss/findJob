@@ -77,8 +77,8 @@ public class Person {
     private List<Offer> offers;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "profile_picture_id", referencedColumnName = "id")
-    private ProfilePicture profilePicture;
+    @JoinColumn(name = "picture_id", referencedColumnName = "id")
+    private Picture picture;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "resume_pdf_id", referencedColumnName = "id")

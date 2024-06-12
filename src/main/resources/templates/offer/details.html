@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${offer.title}">Offer title</title>
+
+    <style>
+        .company-logo {
+            width: 100px; /* Adjust the width as needed */
+            height: 100px; /* Adjust the height as needed */
+            object-fit: cover; /* This keeps the aspect ratio while fitting the image within the specified dimensions */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Include the navigation fragment -->
+<th:block th:replace="~{fragments/nav :: nav}"></th:block>
+
+<h1>Company details</h1>
+<img th:src="@{/images/{id}/company-logo(id=${offer.id})}" alt="Profile Picture" class="company-logo" />
+<h2 th:text="${offer.companyName}">Company name</h2>
+<strong th:text="${offer.location}">Location</strong>
+
+<h1>Employer details</h1>
+<p th:text="'First name: ' + ${offer.employer.firstName}">First name</p>
+<p th:text="'Last name: ' + ${offer.employer.lastName}">Last name</p>
+<p th:text="'Email: ' + ${offer.employer.email}">Email</p>
+<p th:text="'Phone number: ' + ${offer.employer.phone}">Phone number</p>
+
+<h1>Offer details</h1>
+<p th:text="'Title: ' + ${offer.title}">Title</p>
+<p th:text="'Description: ' + ${offer.description}">Description</p>
+<p th:text="'Category: ' + ${offer.offerCategory.category}">Category</p>
+<table>
+    <tr>
+        <th th:text="${offer.offerType}">Type</th>
+        <th th:text="${offer.minSalary} + ' - ' + ${offer.maxSalary} + ' PLN'">Salary range</th>
+        <th th:text="${offer.minExperienceYears} + ' - ' + ${offer.maxExperienceYears} + ' years'">Experience</th>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <th th:text="'Required skills: ' + ${offer.requiredSkills}">Skills required</th>
+        <th th:text="'Posted at: ' + ${#temporals.format(offer.postedAt, 'dd-MM-yyyy HH:mm:ss')}">Posted at</th>
+        <th th:text="'Applicants: ' + ${offer.applicationCount}">Applicants</th>
+    </tr>
+</table>
+
+<div th:if="${offer.getResumePdf() != null}">
+    <a th:href="@{/task/offer/{id}(id=${offer.id})}" th:download="${offer.title} + '_task.pdf'">Download task</a>
+    <br/>
+</div>
+
+<div sec:authorize="!hasRole('ROLE_EMPLOYER')">
+    <form th:action="@{/candidate/{id}(id=${offer.id})}" th:method="POST" enctype="multipart/form-data">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <div sec:authorize="hasRole('ROLE_CANDIDATE')">
+            <label for="resumePdf">Upload solve (pdf): </label>
+            <input type="file" id="resumePdf" name="resume_file" accept=".pdf" />
+            <br/>
+        </div>
+
+        <button type="submit">Apply</button>
+    </form>
+</div>
+
+
+</body>
+</html>

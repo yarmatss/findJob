@@ -30,7 +30,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/profile/*", "/auth/registration", "/auth/login", "offer/*", "/", "images/**", "resume/**").permitAll()
+                                .requestMatchers("/profile/*", "/auth/registration", "/auth/login",
+                                        "offer/*", "/", "images/**", "resume/**", "task/**").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/employer/**").hasRole("EMPLOYER")
                                 .requestMatchers("/candidate/**").hasRole("CANDIDATE")

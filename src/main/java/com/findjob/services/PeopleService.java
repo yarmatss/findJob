@@ -28,6 +28,11 @@ public class PeopleService {
         return foundPerson.orElse(null);
     }
 
+    public Person findByUsername(String username) {
+        Optional<Person> person = peopleRepository.findByUsername(username);
+        return person.orElse(null);
+    }
+
     @Transactional
     public void save(Person person) {
         peopleRepository.save(person);

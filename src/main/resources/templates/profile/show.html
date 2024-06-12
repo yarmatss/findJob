@@ -44,7 +44,7 @@
     <span th:text="${#temporals.format(person.createdAt, 'dd-MM-yyyy HH:mm:ss')}">Created at</span>
 </p>
 
-<div th:if="${person.getProfilePicture() != null}">
+<div th:if="${person.getPicture() != null}">
     <img th:src="@{/images/{id}/profile-picture(id=${person.id})}" alt="Profile Picture" class="profile-picture" />
     <br/>
 </div>

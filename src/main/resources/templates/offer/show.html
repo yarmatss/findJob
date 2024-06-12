@@ -3,39 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <title>Find Job</title>
+
+    <style>
+        .company-logo {
+            width: 100px; /* Adjust the width as needed */
+            height: 100px; /* Adjust the height as needed */
+            object-fit: cover; /* This keeps the aspect ratio while fitting the image within the specified dimensions */
+        }
+    </style>
 </head>
 <body>
 
 <!-- Include the navigation fragment -->
 <th:block th:replace="~{fragments/nav :: nav}"></th:block>
 
-<table>
-    <tr>
-        <th>Company name</th>
-        <th>Company logo</th>
-        <th>Title</th>
-        <th>Category</th>
-        <th>Type</th>
-        <th>Salary range</th>
-        <th>Experience</th>
-        <th>Skills required</th>
-        <th>Location</th>
-    </tr>
+<form th:action="@{/offer/search}" th:object="${searchCriteria}" method="get">
+    <label for="category">Category:</label>
+    <select id="category" th:field="*{categoryId}">
+        <option th:each="category : ${offerCategories}" th:value="${category.id}" th:text="${category.category}"></option>
+    </select>
 
-    <div th:each="offer : ${offers}">
-        <tr>
-            <th th:text="${offer.getCompanyName()}">Company name</th>
-            <th th:text="${offer.getCompanyLogo()}">Company logo</th>
-            <th th:text="${offer.getTitle()}">Title</th>
-            <th th:text="${offer.offerCategory?.category}">Category</th>
-            <th th:text="${offer.getOfferType()}">Type</th>
-            <th th:text="${offer.getMinSalary()} + ' - ' + ${offer.getMaxSalary()} + ' PLN'">Salary range</th>
-            <th th:text="${offer.getMinExperienceYears()} + ' - ' + ${offer.getMaxExperienceYears()} + ' years'">Experience</th>
-            <th th:text="${offer.getRequiredSkills()}">Skills required</th>
-            <th th:text="${offer.getLocation()}">Location</th>
-        </tr>
-    </div>
-</table>
+    <label for="offerType">Type:</label>
+    <select id="offerType" th:field="*{offerType}">
+        <option value="Full-time">Full-time</option>
+        <option value="Part-time">Part-time</option>
+        <option value="Practice / Internship">Practice / Internship</option>
+        <option value="Freelance">Freelance</option>
+    </select>
+
+    <label for="minSalary">Min Salary:</label>
+    <input type="number" id="minSalary" th:field="*{minSalary}" />
+
+    <label for="maxSalary">Max Salary:</label>
+    <input type="number" id="maxSalary" th:value="*{maxSalary}" />
+
+    <button type="submit">Search</button>
+</form>
+
+<div th:each="offer : ${offers}">
+    <img th:src="@{/images/{id}/company-logo(id=${offer.id})}" alt="Profile Picture" class="company-logo" />
+    <a th:href="@{/offer/{id}(id = ${offer.id})}">
+        <h1 th:text="${offer.title}">Title</h1>
+    </a>
+    <p th:text="${offer.description}">Description</p>
+    <p th:text="${offer.offerCategory.category}">Category</p>
+    <span>
+        <p th:text="${offer.offerType}">Type</p>
+        <p th:text="${offer.minSalary} + ' - ' + ${offer.maxSalary} + ' PLN'">Salary range</p>
+        <p th:text="${offer.minExperienceYears} + ' - ' + ${offer.maxExperienceYears} + ' years'">Experience range</p>
+    </span>
+</div>
 
 </body>
 </html>

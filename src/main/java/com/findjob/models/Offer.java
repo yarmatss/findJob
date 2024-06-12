@@ -63,9 +63,6 @@ public class Offer {
     @Column(name = "location")
     private String location;
 
-    @Column(name = "company_logo")
-    private byte[] companyLogo;
-
     @Column(name = "posted_at")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime postedAt;
@@ -76,4 +73,12 @@ public class Offer {
     @ManyToOne
     @JoinColumn(name = "employer_id")
     private Person employer;
+
+    @ManyToOne
+    @JoinColumn(name = "company_logo_id")
+    private Picture companyLogo;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "resume_pdf_id", referencedColumnName = "id")
+    private ResumePdf resumePdf;
 }

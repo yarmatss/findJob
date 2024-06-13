@@ -29,6 +29,11 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .job-listing:hover {
+            background-color: #f0f0f0;
         }
         .job-details {
             margin-left: 20px;
@@ -96,12 +101,10 @@
         <button type="submit">Search</button>
     </form>
 
-    <div th:each="offer : ${offers}" class="job-listing">
+    <div th:each="offer : ${offers}" class="job-listing" th:onclick="|location.href='@{/offer/{id}(id=${offer.id})}'|">
         <img th:src="@{/images/{id}/company-logo(id=${offer.id})}" alt="Company Logo" class="company-logo" />
         <div class="job-details">
-            <a th:href="@{/offer/{id}(id=${offer.id})}">
-                <h2 th:text="${offer.title}">Title</h2>
-            </a>
+            <h2 th:text="${offer.title}">Title</h2>
             <p th:text="${offer.description}">Description</p>
             <p th:text="${offer.offerCategory.category}">Category</p>
             <p>

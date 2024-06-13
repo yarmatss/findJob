@@ -41,6 +41,13 @@
             display: inline;
             margin-right: 10px;
         }
+        .clickable-row {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .clickable-row:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
@@ -69,7 +76,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="offer : ${offers}">
+        <tr th:each="offer : ${offers}" class="clickable-row" th:onclick="|location.href='@{/employer/offer/{id}(id=${offer.id})}'|">
             <td th:text="${offer.companyName}">Company name</td>
             <td><img th:src="@{/images/{id}/company-logo(id=${offer.id})}" alt="Profile Picture" class="company-logo" /></td>
             <td th:text="${offer.title}">Title</td>

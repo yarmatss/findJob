@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Applications</title>
@@ -37,6 +37,13 @@
             object-fit: cover;
             border-radius: 50%;
         }
+        .clickable-row {
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .clickable-row:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 </head>
 <body>
@@ -64,7 +71,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="my_application : ${applications}">
+        <tr th:each="my_application : ${applications}" class="clickable-row" th:onclick="|location.href='@{/profile/{id}(id=${my_application.person.id})}'|">
             <td th:text="${my_application.offer.companyName}">Company name</td>
             <td><img th:src="@{/images/{id}/company-logo(id=${my_application.offer.companyLogo.id})}" alt="Profile Picture" class="company-logo" /></td>
             <td th:text="${my_application.offer.title}">Title</td>
